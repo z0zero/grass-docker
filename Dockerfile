@@ -1,4 +1,4 @@
- # Gunakan Python 3.11 sebagai base image
+# Gunakan Python 3.11 sebagai base image
 FROM python:3.11-slim
 
 # Set working directory
@@ -17,9 +17,11 @@ RUN touch proxy_list.txt
 # Set environment variable dengan nilai default
 ENV USER_ID=""
 
-# Buat script entrypoint
+# Copy dan set permissions untuk entrypoint
 COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
+# Perbaikan untuk line endings dan permissions
+RUN sed -i 's/\r$//' entrypoint.sh && \
+    chmod +x entrypoint.sh
 
 # Set entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
