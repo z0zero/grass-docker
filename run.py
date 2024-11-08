@@ -111,7 +111,7 @@ async def main():
         logger.error("USER_ID environment variable tidak ditemukan")
         return
 
-    with open('proxies.txt', 'r') as file:
+    with open('proxy_list', 'r') as file:
         local_proxies = file.read().splitlines()
     tasks = [asyncio.ensure_future(connect_to_wss(i, _user_id))
              for i in local_proxies]
