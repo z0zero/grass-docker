@@ -7,6 +7,7 @@ import time
 import uuid
 import requests
 import shutil
+import os
 from loguru import logger
 from websockets_proxy import Proxy, proxy_connect
 from fake_useragent import UserAgent
@@ -104,8 +105,13 @@ async def connect_to_wss(socks5_proxy, user_id):
 
 
 async def main():
-    _user_id = input('Silakan Masukkan user ID Anda: ')
-    with open('proxy_list.txt', 'r') as file:
+    # Mengambil USER_ID dari environment variable
+    _user_id = os.environ.get('USER_ID')
+    if not _user_id:
+        logger.error("USER_ID environment variable tidak ditemukan")
+        return
+
+    with open('proxies.txt', 'r') as file:
         local_proxies = file.read().splitlines()
     tasks = [asyncio.ensure_future(connect_to_wss(i, _user_id))
              for i in local_proxies]
